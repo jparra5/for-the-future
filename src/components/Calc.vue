@@ -3,38 +3,37 @@
   <div class="calc-body">
     <div class="calc-screen">
       <div class="calc-operation">2536 + 419 + </div>
-      <div class="calc-typed">2955<span class="blink-me">_</span></div>
+      <div class="calc-typed">{{this.compute}}</div>
     </div>
     <div class="calc-button-row">
-      <div class="button c">C</div>
-      <div class="button l">≠</div>
-      <div class="button l">%</div>
-      <div class="button l">/</div>
+      <div class="button c" v-on:click="buttonClick('clear', $event)">C</div>
+      <div class="button l" v-on:click="buttonClick('notequal', $event)">≠</div>
+      <div class="button l" v-on:click="buttonClick('percent', $event)">%</div>
+      <div class="button l" v-on:click="buttonClick('divide', $event)">/</div>
     </div>
     <div class="calc-button-row">
-      <div class="button">7</div>
-      <div class="button">8</div>
-      <div class="button">9</div>
-      <div class="button l">x</div>
+      <div class="button" v-on:click="buttonClick('7', $event)">7</div>
+      <div class="button" v-on:click="buttonClick('8', $event)">8</div>
+      <div class="button" v-on:click="buttonClick('9', $event)">9</div>
+      <div class="button l" v-on:click="buttonClick('multiply', $event)">x</div>
     </div>
     <div class="calc-button-row">
-      <div class="button">4</div>
-      <div class="button">5</div>
-      <div class="button">6</div>
-      <div class="button l">−</div>
+      <div class="button" v-on:click="buttonClick('4', $event)">4</div>
+      <div class="button" v-on:click="buttonClick('5', $event)">5</div>
+      <div class="button" v-on:click="buttonClick('6', $event)">6</div>
+      <div class="button l" v-on:click="buttonClick('minus', $event)">−</div>
     </div>
     <div class="calc-button-row">
-      <div class="button">1</div>
-      <div class="button">2</div>
-      <div class="button">3</div>
-      <div class="button l">+</div>
+      <div class="button" v-on:click="buttonClick('1', $event)">1</div>
+      <div class="button" v-on:click="buttonClick('2', $event)">2</div>
+      <div class="button" v-on:click="buttonClick('3', $event)">3</div>
+      <div class="button l" v-on:click="buttonClick('plus', $event)">+</div>
     </div>
     <div class="calc-button-row">
-      <div class="button">.</div>
-      <div class="button">0</div>
-      <div class="button">
-        <</div>
-          <div class="button l">=</div>
+      <div class="button" v-on:click="buttonClick('period', $event)">.</div>
+      <div class="button" v-on:click="buttonClick('0', $event)">0</div>
+      <div class="button" v-on:click="buttonClick('lessthan', $event)"><</div>
+      <div class="button l" v-on:click="buttonClick('equal', $event)">=</div>
       </div>
     </div>
   </div>
@@ -42,28 +41,24 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Calc',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      compute: '4444'
     }
   },
   methods: {
+    buttonClick: function (btn, event) {
+      // now we have access to the native event
+      alert('Button: ' + btn)
+    },
     submitMessage: function () {
-      console.log('jaime was here')
-      alert('User typed: ' + this.userInput)
-
-      this.textMessages.push({
-        name: 'Justin',
-        message: this.userInput
-      })
-
-      this.userInput = '';
+      alert('button clicked')
     }
   },
   computed: {
     woot: function () {
-
     }
   },
   created () {
