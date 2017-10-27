@@ -1,5 +1,6 @@
 'use strict'
 require('./check-versions')()
+var routes = require( '../src/server/routes' );
 
 const config = require('../config')
 if (!process.env.NODE_ENV) {
@@ -57,6 +58,8 @@ Object.keys(proxyTable).forEach(function (context) {
   }
   app.use(proxyMiddleware(options.filter || context, options))
 })
+
+routes(app);
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
