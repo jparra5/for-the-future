@@ -2,38 +2,38 @@
 <div class="container">
   <div class="calc-body">
     <div class="calc-screen">
-      <div class="calc-operation">2536 + 419 + </div>
-      <div class="calc-typed">{{this.compute}}</div>
+      <div class="calc-operation">{{this.numbers[0]}} {{this.operands[0]}} {{this.numbers[1]}} {{this.operands[1]}} {{this.numbers[2]}}</div>
+      <div class="calc-typed">{{this.numbers[1]}}</div>
     </div>
     <div class="calc-button-row">
-      <div class="button c" v-on:click="buttonClick('clear', $event)">C</div>
-      <div class="button l" v-on:click="buttonClick('notequal', $event)">≠</div>
-      <div class="button l" v-on:click="buttonClick('percent', $event)">%</div>
-      <div class="button l" v-on:click="buttonClick('divide', $event)">/</div>
+      <div class="button c" v-on:click="buttonClick('c', $event)">C</div>
+      <div class="button l" v-on:click="buttonClick('!=', $event)">≠</div>
+      <div class="button l" v-on:click="buttonClick('%', $event)">%</div>
+      <div class="button l" v-on:click="buttonClick('/', $event)">/</div>
     </div>
     <div class="calc-button-row">
-      <div class="button" v-on:click="buttonClick('7', $event)">7</div>
-      <div class="button" v-on:click="buttonClick('8', $event)">8</div>
-      <div class="button" v-on:click="buttonClick('9', $event)">9</div>
-      <div class="button l" v-on:click="buttonClick('multiply', $event)">x</div>
+      <div class="button" v-on:click="numberClick('7', $event)">7</div>
+      <div class="button" v-on:click="numberClick('8', $event)">8</div>
+      <div class="button" v-on:click="numberClick('9', $event)">9</div>
+      <div class="button l" v-on:click="buttonClick('*', $event)">x</div>
     </div>
     <div class="calc-button-row">
-      <div class="button" v-on:click="buttonClick('4', $event)">4</div>
-      <div class="button" v-on:click="buttonClick('5', $event)">5</div>
-      <div class="button" v-on:click="buttonClick('6', $event)">6</div>
-      <div class="button l" v-on:click="buttonClick('minus', $event)">−</div>
+      <div class="button" v-on:click="numberClick('4', $event)">4</div>
+      <div class="button" v-on:click="numberClick('5', $event)">5</div>
+      <div class="button" v-on:click="numberClick('6', $event)">6</div>
+      <div class="button l" v-on:click="buttonClick('-', $event)">−</div>
     </div>
     <div class="calc-button-row">
-      <div class="button" v-on:click="buttonClick('1', $event)">1</div>
-      <div class="button" v-on:click="buttonClick('2', $event)">2</div>
-      <div class="button" v-on:click="buttonClick('3', $event)">3</div>
-      <div class="button l" v-on:click="buttonClick('plus', $event)">+</div>
+      <div class="button" v-on:click="numberClick('1', $event)">1</div>
+      <div class="button" v-on:click="numberClick('2', $event)">2</div>
+      <div class="button" v-on:click="numberClick('3', $event)">3</div>
+      <div class="button l" v-on:click="buttonClick('+', $event)">+</div>
     </div>
     <div class="calc-button-row">
-      <div class="button" v-on:click="buttonClick('period', $event)">.</div>
-      <div class="button" v-on:click="buttonClick('0', $event)">0</div>
-      <div class="button" v-on:click="buttonClick('lessthan', $event)"><</div>
-      <div class="button l" v-on:click="buttonClick('equal', $event)">=</div>
+      <div class="button" v-on:click="buttonClick('.', $event)">.</div>
+      <div class="button" v-on:click="numberClick('0', $event)">0</div>
+      <div class="button" v-on:click="buttonClick('<', $event)"><</div>
+      <div class="button l" v-on:click="buttonClick('=', $event)">=</div>
       </div>
     </div>
   </div>
@@ -45,13 +45,40 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      compute: '4444'
+      numbers: ['54.45', '10.01', '44.44'], // prev, current, computed
+      operands: ['+', '='],
+      clearFlag: true
     }
   },
   methods: {
+    clear: function () {
+      this.clearFlag = false
+      this.numbers = ['', '', '']
+      this.operands = ['', '', '']
+      console.log('CLEARD')
+    },
+    numberClick: function (btn, event) {
+      if (this.clearFlag) {
+        this.clear()
+      }
+      this.numbers[1] = this.numbers[1] + '' + btn
+      console.log(this.numbers)
+    },
     buttonClick: function (btn, event) {
       // now we have access to the native event
-      alert('Button: ' + btn)
+      switch (btn) {
+        case 'c':
+          this.clear()
+          break
+        case '!=':
+          break
+        case '%':
+          break
+        case '/':
+          break
+        case '*':
+          break
+      }
     },
     submitMessage: function () {
       alert('button clicked')
