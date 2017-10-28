@@ -2,8 +2,8 @@
 <div class="container">
   <div class="calc-body">
     <div class="calc-screen">
-      <div class="calc-operation">{{this.numbers[0]}} {{this.operands[0]}} {{this.numbers[1]}} {{this.operands[1]}} {{this.numbers[2]}}</div>
-      <div class="calc-typed">{{this.numbers[1]}}</div>
+      <div class="calc-operation">{{this.numbers.previous}} {{this.operands.previous}} {{this.numbers.current}}</div>
+      <div class="calc-typed" v-bind:class="{ 'calc-error': hasError}">{{this.numbers.display}}</div>
     </div>
     <div class="calc-button-row">
       <div class="button c" v-on:click="buttonClick('c', $event)">C</div>
@@ -45,27 +45,77 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      numbers: ['54.45', '10.01', '44.44'], // prev, current, computed
-      operands: ['+', '='],
+      hasError: false,
+      numbers: {
+        display: '44.44',
+        previous: '54.45',
+        current: '10.01',
+        compute: '44.44'
+      },
+      operands: {
+        previous: '+',
+        current: '='
+      },
       clearFlag: true
     }
   },
   methods: {
+    calc: function () {
+      switch (this.operands.previous) {
+        case '!=':
+          if (this.numbers.previous !== this.numbers.current) {
+            return '1'
+          } else {
+            return '0'
+          }
+        case '%':
+          break
+        case '/':
+          break
+        case '*':
+          break
+        case '-':
+          return Number(this.numbers.previous) - Number(this.numbers.current)
+        case '+':
+          return Number(this.numbers.previous) + Number(this.numbers.current)
+        case '<':
+          if (Number(this.numbers.previous) < Number(this.numbers.current)) {
+            return '1'
+          } else {
+            return '0'
+          }
+      }
+    },
     clear: function () {
       this.clearFlag = false
-      this.numbers = ['', '', '']
-      this.operands = ['', '', '']
-      console.log('CLEARD')
+      this.numbers = {
+        display: '',
+        previous: '',
+        current: '',
+        compute: ''
+      }
+      this.operands = {
+        previous: '',
+        current: ''
+      }
+    },
+    error: function () {
+      this.hasError = true
+      setTimeout(function () {
+        this.hasError = false
+      }.bind(this), 500);
     },
     numberClick: function (btn, event) {
       if (this.clearFlag) {
         this.clear()
       }
-      this.numbers[1] = this.numbers[1] + '' + btn
-      console.log(this.numbers)
+      if (this.numbers.current.length < 8) {
+        this.numbers.current += btn
+      } else {
+        this.error()
+      }
     },
     buttonClick: function (btn, event) {
-      // now we have access to the native event
       switch (btn) {
         case 'c':
           this.clear()
@@ -77,6 +127,36 @@ export default {
         case '/':
           break
         case '*':
+          break
+        case '-':
+          break
+        case '+':
+          if (this.operands.previous === '') {
+            this.operands.previous = '+'
+            this.numbers.previous = this.numbers.current
+            this.numbers.current = ''
+            this.numbers.display = ''
+          } else {
+            this.numbers.compute = this.calc()
+            this.numbers.previous = this.numbers.compute
+            this.operands.previous = btn
+            this.numbers.current = ''
+            this.numbers.compute = ''
+            this.numbers.display = ''
+          }
+          break
+        case '.':
+          if (this.numbers.current.length < 8 && this.numbers.current.indexOf('.') === -1) {
+            this.numbers.current += btn
+          } else {
+            this.error()
+          }
+          break
+        case '<':
+          break
+        case '=':
+          this.numbers.compute = this.calc()
+          this.numbers.current = this.numbers.compute
           break
       }
     },
@@ -124,6 +204,10 @@ body {
   width: 100%;
   height: 150px;
   padding: 20px;
+}
+
+.calc-error {
+  background: #8e0909;
 }
 
 .calc-operation {
